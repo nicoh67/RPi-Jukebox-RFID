@@ -273,7 +273,7 @@ if [ "$CARDID" ]; then
             ;;
 
         $BACKUP2NETWORK)
-            sudo $PATHDATA/backup_data.sh
+            sudo $PATHDATA/backup2network.sh
             ;;
 
         *)

@@ -1,0 +1,13 @@
+# VARIABLES TO CHANGE
+# This file is read by scripts/backup2network.sh
+# It contains the RFID chip IDs which are used to control the Phoniebox.
+# Adjust these variables to match your system and configuration.
+#
+
+
+VOLUME_BACKUP="/mnt/backup"
+
+NFS_SERVER="%NFS_SERVER%"
+NFS_VOLUME="/volume1/PhonieBoxBackup"
+
+LIMIT_TO_NETWORK="%SSID%"
