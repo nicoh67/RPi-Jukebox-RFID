@@ -33,23 +33,24 @@ if [ $LIMIT_TO_NETWORK ]; then
 	fi
 fi
 
-
 RET=$(mount -o timeo=1 -t nfs $NFS_SERVER:$NFS_VOLUME $VOLUME_BACKUP 2>&1)
 
-if [[ "$RET" =~ "Connection timed out" ]]; then
+if [ "$RET" != "" ]; then
 	echo "ERROR ! Unable to connect to backup server"
+	echo $RET
+	echo ""
 	mpg123 $PATHROOT/misc/backup_unable_to_connect_to_server.mp3
 	exit 0
 fi
 
-
 echo "Backuping data"
 
-rsync -avz $PATHROOT $VOLUME_BACKUP
-
+sync_files_cnt=$(rsync -avz $PATHROOT $VOLUME_BACKUP | grep 'RPi-Jukebox-RFID/' | wc -l)
 
 umount $VOLUME_BACKUP
 
 
 mpg123 $PATHROOT/misc/backup_ended.mp3
+
+${PATHDATA}/userscripts/speech.sh "$sync_files_cnt fichiers synchronisés"
 
