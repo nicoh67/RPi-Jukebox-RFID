@@ -1,3 +1,7 @@
+# Ceci est un fork basé sur l'excellent PhonieBox , modifié pour répondre à mes besoins précis :)
+
+
+
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/MiczFlor/RPi-Jukebox-RFID/develop)
 
 ![Python Tests](https://github.com/MiczFlor/RPi-Jukebox-RFID/workflows/Python%20package/badge.svg) ![Install Script Tests](https://github.com/MiczFlor/RPi-Jukebox-RFID/workflows/Docker%20Test%20Installation/badge.svg) 
