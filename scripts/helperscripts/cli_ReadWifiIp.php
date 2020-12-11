@@ -7,11 +7,11 @@ $wifiIp = exec("sudo ifconfig ".$wlanDevice." | grep \"inet \" | awk -F'[: ]+' '
 //$wifiIp = "0.123.456.789"; // testing all possibly numbers
 
 $array = str_split($wifiIp);
-$concat = "silence-2sec.mp3|";
+$concat = "";
 foreach ($array as $char) {
- $concat .= "number0".$char.".mp3|silence-0.5sec.mp3|";
+ $concat .= "number0".$char.".mp3|";
 }
-$concat .= "silence-2sec.mp3";
+$concat .= "silence-0.5sec.mp3";
 
 // create and read mp3
 exec("sudo ffmpeg -i \"concat:".$concat."\" -acodec copy WifiIp.mp3; sudo mpg123 WifiIp.mp3");
