@@ -140,7 +140,7 @@ RECORDPLAYBACKLATEST="%RECORDPLAYBACKLATEST%"
 
 
 ## Custom commands
-### Backup to Network
+### Backup to Network (Nicos command)
 BACKUP2NETWORK="%BACKUP2NETWORK%"
 
 
