@@ -7,8 +7,8 @@ PATHDATA="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 if [ "$(id -nu)" != "root" ]; then
-   echo Nécessite sudo
-    exit 1
+	echo "sudo is needed"
+	exit 1
 fi
 
 mpg123 $PATHROOT/misc/backup_start.mp3
