@@ -1,5 +1,10 @@
 #!/usr/bin/php
 <?php
+$folder_lang = '';
+if(file_exists(dirname(dirname(dirname(__FILE__))) .'/settings/Lang')) {
+	$folder_lang = file_get_contents(dirname(dirname(dirname(__FILE__))) .'/settings/Lang') .'/';
+}
+
 $wlanDevice = "wlan0";
 //$wlanDevice = "wlp4s0"; // this is the device name on my ubuntu, just for testing 
 
@@ -9,7 +14,10 @@ $wifiIp = exec("sudo ifconfig ".$wlanDevice." | grep \"inet \" | awk -F'[: ]+' '
 $array = str_split($wifiIp);
 $concat = "";
 foreach ($array as $char) {
- $concat .= "number0".$char.".mp3|";
+ $mp3 = "number0".$char.".mp3";
+ if(file_exists($folder_lang . $mp3))
+  $mp3 = $folder_lang . $mp3;
+ $concat .= $mp3 ."|";
 }
 $concat .= "silence-0.5sec.mp3";
 

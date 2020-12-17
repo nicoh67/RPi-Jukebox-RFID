@@ -77,6 +77,10 @@ def functionCallPlayerSeekFwd(*args):
 def functionCallPlayerSeekBack(*args):
     function_call("{command} -c=playerseek -v=-10".format(command=playout_control), shell=True)
 
+def functionCallPlayerShutdownAfter15(*args):
+    function_call("{command} -c=shutdownafter -v=15".format(command=playout_control), shell=True)
+
+
 
 def getFunctionCall(functionName):
     logger.error('Get FunctionCall: {} {}'.format(functionName, functionName in locals()))
