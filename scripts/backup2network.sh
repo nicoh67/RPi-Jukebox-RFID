@@ -45,7 +45,7 @@ fi
 
 echo "Backuping data"
 
-sync_files_cnt=$(rsync -avz $PATHROOT $VOLUME_BACKUP | grep 'RPi-Jukebox-RFID/' | wc -l)
+sync_files_cnt=$(rsync --delete -avz $PATHROOT $VOLUME_BACKUP | grep 'RPi-Jukebox-RFID/' | wc -l)
 
 umount $VOLUME_BACKUP
 
