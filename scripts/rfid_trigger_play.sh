@@ -272,9 +272,21 @@ if [ "$CARDID" ]; then
             $PATHDATA/playout_controls.sh -c=readwifiipoverspeaker
             ;;
 
+        $CMDREPEATSINGLE)
+            $PATHDATA/playout_controls.sh -c=playerrepeat -v=single
+            ;;
+        $CMDREPEATPLAYLIST)
+            $PATHDATA/playout_controls.sh -c=playerrepeat -v=playlist
+            ;;
+        $CMDREPEATOFF)
+            $PATHDATA/playout_controls.sh -c=playerrepeat -v=off
+            ;;
+
+
         $BACKUP2NETWORK)
             sudo $PATHDATA/backup2network.sh
             ;;
+
 
         *)
 

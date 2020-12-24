@@ -48,6 +48,15 @@ CMDPAUSE="%CMDPAUSE%"
 ### Resume audio playout
 CMDPLAY="%CMDPLAY%"
 
+## Player Repeat modes
+### Repeat single
+CMDREPEATSINGLE="%CMDREPEATSINGLE%"
+### Repeat playlist
+CMDREPEATPLAYLIST="%CMDREPEATPLAYLIST%"
+### Repeat off
+CMDREPEATOFF="%CMDREPEATOFF%"
+
+
 ## System
 ### Shutdown
 CMDSHUTDOWN="%CMDSHUTDOWN%"

@@ -80,6 +80,15 @@ def functionCallPlayerSeekBack(*args):
 def functionCallPlayerShutdownAfter15(*args):
     function_call("{command} -c=shutdownafter -v=15".format(command=playout_control), shell=True)
 
+def functionCallPlayerRepeatSingle(*args):
+    function_call("{command} -c=playerrepeat -v=single".format(command=playout_control), shell=True)
+
+def functionCallPlayerRepeatPlaylist(*args):
+    function_call("{command} -c=playerrepeat -v=playlist".format(command=playout_control), shell=True)
+
+def functionCallPlayerRepeatOff(*args):
+    function_call("{command} -c=playerrepeat -v=off".format(command=playout_control), shell=True)
+
 
 
 def getFunctionCall(functionName):
