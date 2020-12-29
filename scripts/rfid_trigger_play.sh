@@ -287,6 +287,16 @@ if [ "$CARDID" ]; then
             sudo $PATHDATA/backup2network.sh
             ;;
 
+        $RFIDGAMEWHOISINSTRUMENT)
+            $PATHDATA/playout_controls.sh -c=playerstop
+            python $PATHDATA/rfid_game.py -d=$PATHDATA/../shared/GAMES/instruments/
+            ;;
+
+        $RFIDGAMEWHOISANIMALS)
+            $PATHDATA/playout_controls.sh -c=playerstop
+            python $PATHDATA/rfid_game.py -d=$PATHDATA/../shared/GAMES/animals/
+            ;;
+
 
         *)
 
