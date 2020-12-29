@@ -25,6 +25,8 @@ system_shortcuts = os.listdir('../shared/shortcuts')
 
 subprocess.call([dir_path + "/userscripts/speech.sh Jouons ensemble"], shell=True)
 
+subprocess.call(["mpc clear && mpc add Instruments\ de\ musique/Les\ instruments\ de\ la\ fanfare && mpc play"], shell=True)
+
 
 while True:
     # reading the card id

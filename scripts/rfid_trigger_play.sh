@@ -289,12 +289,12 @@ if [ "$CARDID" ]; then
 
         $RFIDGAMEWHOISINSTRUMENT)
             $PATHDATA/playout_controls.sh -c=playerstop
-            python $PATHDATA/rfid_game.py -d=$PATHDATA/../shared/GAMES/instruments/
+            python $PATHDATA/rfid_game.py -d=$PATHDATA/../shared/audiofolders/GAMES/instruments/
             ;;
 
         $RFIDGAMEWHOISANIMALS)
             $PATHDATA/playout_controls.sh -c=playerstop
-            python $PATHDATA/rfid_game.py -d=$PATHDATA/../shared/GAMES/animals/
+            python $PATHDATA/rfid_game.py -d=$PATHDATA/../shared/audiofolders/GAMES/animals/
             ;;
 
 
