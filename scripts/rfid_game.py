@@ -5,8 +5,6 @@ import os
 import subprocess
 import time
 import re
-from pprint import pprint 
-
 
 from Reader import Reader
 
@@ -23,11 +21,10 @@ file_path = os.path.dirname(__file__)
 if file_path != "":
     os.chdir(file_path)
 
-shorcuts = os.listdir('../shared/shortcuts')
+system_shortcuts = os.listdir('../shared/shortcuts')
 
 subprocess.call([dir_path + "/userscripts/speech.sh Jouons ensemble"], shell=True)
 
-print(shorcuts)
 
 while True:
     # reading the card id
@@ -45,7 +42,7 @@ while True:
             if cardid != previous_id or (time.time() - previous_time) >= float(same_id_delay):
                 print(cardid)
                 previous_id = cardid
-                if cardid in shorcuts:
+                if cardid in system_shortcuts:
                     print("COMMAND CARD")
                     subprocess.call(["sudo systemctl restart phoniebox-rfid-reader"], shell=True)
                     subprocess.call([dir_path + '/rfid_trigger_play.sh --cardid=' + cardid], shell=True)
