@@ -9,6 +9,7 @@ import random
 
 
 
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # get control card ids
@@ -17,8 +18,14 @@ if file_path != "":
     os.chdir(file_path)
 
 
-def speak(text):
-    subprocess.call(["mpc pause ; "+ dir_path + "/userscripts/speech.sh "+ text], shell=True)
+def speak(text, file=""):
+    if file == "":
+        file = text
+
+    file = config["AUDIOFOLDERSPATH"] +"/GAMES/"+ file +".mp3"
+    if not os.path.exists(file):
+        subprocess.call(["wget -q -U Mozilla -O \""+ file +"\" \"http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q="+ text +"&tl=fr\""], shell=True)
+    subprocess.call(["mpc pause ; mpg123 \""+ file + "\""], shell=True)
 
 
 
@@ -102,7 +109,7 @@ print(folder_path)
 print(items)
 
 
-speak("Jouons ensemble ! Devinons les "+ folder)
+speak("Jouons ensemble ! Devine les "+ folder)
 
 
 from Reader import Reader
