@@ -18,6 +18,7 @@ if file_path != "":
     os.chdir(file_path)
 
 
+# Speaking function (with cache in GAMES/ folder)
 def speak(text, file=""):
     if file == "":
         file = text
@@ -26,6 +27,15 @@ def speak(text, file=""):
     if not os.path.exists(file):
         subprocess.call(["wget -q -U Mozilla -O \""+ file +"\" \"http://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q="+ text +"&tl=fr\""], shell=True)
     subprocess.call(["mpc pause ; mpg123 \""+ file + "\""], shell=True)
+
+
+
+# return contents of file
+def readFile(file):
+    f = ""
+    if os.path.exists(file):
+        f = (open(file)).read().rstrip('\n')
+    return f
 
 
 
@@ -46,11 +56,6 @@ for opt, arg in opts:
         folder = arg
 
 
-# check if folder is set
-if folder == "":
-    print("Pas de jeu sélectionné")
-    speak("Pas de jeu sélectionné")
-    exit()
 
 
 
@@ -64,6 +69,13 @@ with open('../settings/global.conf', 'r') as filehandle:
     for line in filecontents:
         cids = (line[:-1]).split('=')
         config[cids[0]] = (cids[1])[1:-1]
+
+
+# check if folder is set
+if folder == "":
+    print("Pas de jeu sélectionné")
+    speak("Pas de jeu sélectionné")
+    exit()
 
 
 
@@ -84,30 +96,28 @@ if not os.path.exists(folder_path):
 
 
 
-system_shortcuts = os.listdir(config["AUDIOFOLDERSPATH"] +'/../shortcuts')
+shortcuts_path = config["AUDIOFOLDERSPATH"] +'/../shortcuts/'
+shortcuts = os.listdir(shortcuts_path)
 
-
-# list all folders as a folder is an item
-items_import = os.listdir(folder_path)
-items_import = [s for s in items_import if os.path.isdir(folder_path + s)]
-
-
-# On récupère les items qui ont un cardid associé (sinon impossible de le trouver)
+# On récupère les items qui ont déjà un cardid associé
 items = {}
-for item_import in items_import:
-    if os.path.exists(folder_path + item_import +"/cardid"):
-        f = (open(folder_path + item_import +"/cardid")).read()
-        items[item_import] = f
-    # pour les tests
-    else:
-        items[item_import] = "998313623"
+for shortcut in shortcuts:
+    f = readFile(shortcuts_path + shortcut)
+    if f != "":
+        # check if folder of item exists
+        if os.path.dirname(f) == "GAMES/"+ folder and os.path.exists(config["AUDIOFOLDERSPATH"] +"/"+ f):
+            items[os.path.basename(f)] = shortcut
+        # pour les tests
+#        else:
+#            items[f] = "998313623"
 
 
 #print(config)
 print(folder_path)
-#print(system_shortcuts)
+print(shortcuts)
 print(items)
-
+print(list(items.values()))
+#exit()
 
 speak("Jouons ensemble ! Devine les "+ folder)
 
@@ -156,16 +166,15 @@ def playitem():
                         speak("Bravo ! Tu as trouvé ! Passons à dautres "+ folder)
                         return True
 
-                    elif cardid in system_shortcuts:
+                    elif cardid in list(items.values()):
+                        speak("Essaye encore !")
+                        subprocess.call(["mpc play"], shell=True)
+
+                    elif cardid in shortcuts:
                         print("COMMAND CARD")
                         subprocess.call(["sudo systemctl restart phoniebox-rfid-reader"], shell=True)
                         subprocess.call([dir_path + '/rfid_trigger_play.sh --cardid=' + cardid], shell=True)
                         exit()
-
-                    else:
-                        speak("Essaye encore !")
-                        subprocess.call(["mpc play"], shell=True)
-
 
 
                 previous_time = time.time()
