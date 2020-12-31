@@ -11,6 +11,7 @@ if [ "$(id -nu)" != "root" ]; then
 	exit 1
 fi
 
+mpc pause
 mpg123 $PATHROOT/misc/backup_start.mp3
 
 
@@ -28,6 +29,7 @@ if [ $LIMIT_TO_NETWORK ]; then
 	
 	if [ \"$LIMIT_TO_NETWORK\" != "$ssid" ]; then
 		echo "ERROR ! Not connected to limited network"
+		mpc pause
 		mpg123 $PATHROOT/misc/backup_incorrect_ssid.mp3
 		exit 0
 	fi
@@ -39,6 +41,7 @@ if [ "$RET" != "" ]; then
 	echo "ERROR ! Unable to connect to backup server"
 	echo $RET
 	echo ""
+	mpc pause
 	mpg123 $PATHROOT/misc/backup_unable_to_connect_to_server.mp3
 	exit 0
 fi
@@ -50,6 +53,7 @@ sync_files_cnt=$(rsync --delete -avz $PATHROOT $VOLUME_BACKUP | grep 'RPi-Jukebo
 umount $VOLUME_BACKUP
 
 
+mpc pause
 mpg123 $PATHROOT/misc/backup_ended.mp3
 
 ${PATHDATA}/userscripts/speech.sh "$sync_files_cnt fichiers synchronisés"
