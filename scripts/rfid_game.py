@@ -182,7 +182,7 @@ def playitem():
                 previous_time = time.time()
 
         except OSError as e:
-            logger.error('Execution failed: {e}'.format(e=e))
+            print('Execution failed: {e}'.format(e=e))
 
 
 
