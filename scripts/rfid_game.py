@@ -126,10 +126,11 @@ from Reader import Reader
 
 reader = Reader()
 
+previous_id = ""
 
 
 def playitem():
-    previous_id = ""
+    global previous_id
     previous_time = time.time()
 
     items_keys = list(items.keys())
@@ -162,8 +163,9 @@ def playitem():
                     previous_id = cardid
 
                     if cardid == item_card_id:
+                        speak("Bravo ! Tu as trouvé !")
                         subprocess.call(["mpc stop ; sudo mpg123 "+ folder_path + item +"/0.mp3"], shell=True)
-                        speak("Bravo ! Tu as trouvé ! Passons à dautres "+ folder)
+                        speak("Au suivant !")
                         return True
 
                     elif cardid in list(items.values()):
