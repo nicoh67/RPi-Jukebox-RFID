@@ -38,9 +38,10 @@
         <li><a href='index.php' class='mainMenu'><i class='mdi mdi-play-circle'></i> <?php print $lang['navHome']; ?></a></li>
         <li><a href='search.php' class='mainMenu'><i class='mdi mdi-magnify'></i> <?php print $lang['navSearch']; ?></a></li>
 	      <li><a href='settings.php' class='mainMenu'><i class='mdi mdi-settings'></i> <?php print $lang['navSettings']; ?></a></li>
+	      <li><a href='audio.php' class='mainMenu'><i class='mdi mdi-headset'></i> <?php print $lang['navAudio']; ?></a></li>
         <li><a href='systemInfo.php' class='mainMenu'><i class='mdi mdi-information-outline'></i> <?php print $lang['navInfo']; ?></a></li>
         <li><a href='manageFilesFolders.php' class='mainMenu'><i class='mdi mdi-folder-upload'></i> <?php print $lang['manageFilesFoldersTitle']; ?></a></li>
-		<li><a href="cardRegisterNew.php" class="mainMenu"><i class='mdi mdi-cards-outline'></i> <?php print $lang['globalRegisterCardShort']; ?></a></li>
+		    <li><a href="cardRegisterNew.php" class="mainMenu"><i class='mdi mdi-cards-outline'></i> <?php print $lang['globalRegisterCardShort']; ?></a></li>
 		<?php
 		if ($edition == "plusSpotify") {
 		print "<li><a href='http://".$conf['local_url'].":6680/iris' class='mainMenu' target='_blank'><i class='mdi mdi-spotify'></i>".$lang['Spotify']."</a></li>";

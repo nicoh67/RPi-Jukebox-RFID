@@ -601,4 +601,80 @@ function mopidyApiCall($method, $params){
     return $json;
 }
 
+
+
+function getMpcOutputs() {
+    exec("mpc outputs", $mpc_outputs);
+    $ret = [];
+    foreach($mpc_outputs as $mpc_output) {
+        preg_match('/Output ([0-9]{1,}) \((.*)\) is (.*)/', $mpc_output, $matches);
+        $ret[$matches[1]] = [
+            "output"  => $matches[1],
+            "name"    => $matches[2],
+            "enabled" => $matches[3] == "enabled" ? 1 : 0,
+        ];
+    }
+    return $ret;
+}
+
+
+function getMpdConfOutputs() {
+    $f_conf = dirname(__FILE__) ."/../settings/mpd.conf";
+    if(!file_exists($f_conf))
+        return [];
+
+    $mpd_conf = file($f_conf);
+    $audio_outputs = [];
+    $audio_outputs_index = -1;
+    foreach($mpd_conf as $mpd_conf_line) {
+      if(trim(str_replace(' ', '', $mpd_conf_line)) == "audio_output{") {
+        $audio_outputs_index++;
+        $audio_outputs[$audio_outputs_index] = [];
+      }
+      else {
+        preg_match('/([a-z]{1,})([\s]{1,})"(.*)"/', trim($mpd_conf_line), $matches);
+        $key = trim($matches[1]);
+        $val = trim($matches[3]);
+        if($key) {
+          if($key=="device") {
+            $d_data = substr(strstr($val, ":"), 1);
+            $d_data = explode(',', $d_data);
+            $device_data = [];
+            foreach($d_data as $dd) {
+              $dd = explode("=", $dd);
+              $device_data[$dd[0]] = $dd[1];
+            }
+
+            $val = array_merge([
+                "raw" => $val,
+                "protocol" => strstr($val, ":", true),
+              ],
+              $device_data
+            );
+          }
+          $audio_outputs[$audio_outputs_index][$key] = $val;
+        }
+      }
+    }
+
+    $audio_outputs1 = [];
+    foreach($audio_outputs as $audio_output) {
+      $audio_outputs1[$audio_output['name']] = $audio_output;
+    }
+    return $audio_outputs1;
+
+}
+
+function getAudioOutputs() {
+    $mpc_outputs = getMpcOutputs();
+    $mpd_conf_outputs = getMpdConfOutputs();
+    
+    foreach($mpc_outputs as $k=>$mpc_output) {
+      if(isset($mpd_conf_outputs[$mpc_output['name']]))
+        $mpc_outputs[$k] = array_merge($mpc_output, $mpd_conf_outputs[$mpc_output['name']]);
+    }
+    return $mpc_outputs;
+}
+
+
 ?>

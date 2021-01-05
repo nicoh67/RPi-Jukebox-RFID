@@ -68,6 +68,7 @@ $lang['globalLang'] = "Langue";
 $lang['globalLanguageSettings'] = "Paramètres de Langue";
 $lang['globalPriority'] = "Priorité";
 $lang['globalEmail'] = "Adresse email";
+$lang['globalAudioOutputs'] = "Sorties Audio";
 
 // Player title HTML
 $lang['playerSeekBack'] = "- 20 secondes";
@@ -98,6 +99,7 @@ $lang['navBrand'] = "Phoniebox";
 $lang['navHome'] = "Lecteur";
 $lang['navSearch'] = "Recherche";
 $lang['navSettings'] = "Paramètres";
+$lang['navAudio'] = "Audio";
 $lang['navInfo'] = "Info";
 $lang['navShutdown'] = "Éteindre";
 $lang['navReboot'] = "Redémarrer";
