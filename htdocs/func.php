@@ -677,4 +677,16 @@ function getAudioOutputs() {
 }
 
 
+function setAudioOutputs() {
+    $mpc_outputs = getMpcOutputs();
+    $mpd_conf_outputs = getMpdConfOutputs();
+    
+    foreach($mpc_outputs as $k=>$mpc_output) {
+      if(isset($mpd_conf_outputs[$mpc_output['name']]))
+        $mpc_outputs[$k] = array_merge($mpc_output, $mpd_conf_outputs[$mpc_output['name']]);
+    }
+    return $mpc_outputs;
+}
+
+
 ?>

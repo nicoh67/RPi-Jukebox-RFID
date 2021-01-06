@@ -34,28 +34,9 @@ if($debug == "true") {
     </div><!-- /.panel-heading -->
 
     <div class="panel-body">
-      <div class="col-md-12 col-xs-12">
-        
-        <form name='AudioOutput' method='post' action='<?php print $_SERVER['PHP_SELF']; ?>'>
-          <div class="input-group my-group">
-            <?php
-            $audio_outputs = getAudioOutputs();
-            ?>
-            <select id="AudioOutput" name="AudioOutput" class="selectpicker form-control" size=5 multiple>
-            <?php
-              foreach($audio_outputs as $ao) {
-                echo('<option'. ($ao['enabled'] ? ' selected' : '') .' device-dev="'. (isset($ao['device']['DEV']) ? $ao['device']['DEV'] : "") .'" value="'. $ao['output'] .'"> '. $ao['output'] .' - '. $ao['name'] .' '. ($ao['device']['raw'] ? " &nbsp; &nbsp; &nbsp; &nbsp; (". $ao['device']['raw'] .")" : "") .'</option>');
-              }
-            ?>
-            </select> 
-            <span class="input-group-btn">
-              <input type='submit' class="btn btn-default" name='submit' value='<?php print $lang['globalSet']; ?>'/>
-            </span>
-          </div>
-        </form>
-      </div>
-
-
+      <?php
+      include("inc.setAudioOutput.php");
+      ?>
     </div><!-- /.panel-body -->
   </div><!-- /.panel -->
 </div><!-- /.panel-group -->
