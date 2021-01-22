@@ -63,6 +63,9 @@ NOW=`date +%Y-%m-%d.%H:%M:%S`
 # disablewifi
 # enablewifi
 # togglewifi
+# disablebluetooth
+# enablebluetooth
+# togglebluetooth
 # recordstart
 # recordstop
 # recordplaylatest
@@ -186,8 +189,11 @@ if [ "${CHAPTER_SUPPORT_FOR_EXTENSION}${CHAPTER_SUPPORT_FOR_DURATION}" == "11" ]
   NEXT_CHAPTER_START=$(grep "$CURRENT_SONG_ELAPSED" -A 1 <<< "$CHAPTER_START_TIMES" | tail -n1)
 fi
 
-# SHUFFLE_STATUS=$(echo -e status\\nclose | nc -w 1 localhost 6600 | grep -o -P '(?<=random: ).*')
+mpc | grep -i 'playing' > /dev/null 2>&1
+MPC_PLAYING=$?
 
+
+# SHUFFLE_STATUS=$(echo -e status\\nclose | nc -w 1 localhost 6600 | grep -o -P '(?<=random: ).*')
 case $COMMAND in
     shutdown)
         if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
@@ -928,12 +934,16 @@ case $COMMAND in
     enablewifi)
         if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
         rfkill unblock wifi
+        mpc pause && /usr/bin/mpg123 ${PATHDATA}/../shared/enablewifi.mp3
+        if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
         ;;
     disablewifi)
         if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
         # see https://forum-raspberrypi.de/forum/thread/25696-bluetooth-und-wlan-deaktivieren/#pid226072 seems to disable wifi,
         # as good as it gets
+        mpc pause && /usr/bin/mpg123 ${PATHDATA}/../shared/disablewifi.mp3
         rfkill block wifi
+        if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
         ;;
     togglewifi)
         if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
@@ -943,8 +953,6 @@ case $COMMAND in
         WIFI_SOFTBLOCK_RESULT=$?
         wpa_cli -i wlan0 status | grep 'ip_address' > /dev/null 2>&1
         WIFI_IP_RESULT=$?
-        mpc | grep -i 'playing' > /dev/null 2>&1
-        MPC_PLAYING=$?
         mpc pause
 
         if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   WIFI_IP_RESULT='${WIFI_IP_RESULT}' WIFI_SOFTBLOCK_RESULT='${WIFI_SOFTBLOCK_RESULT}'" >> ${PATHDATA}/../logs/debug.log; fi
@@ -953,7 +961,7 @@ case $COMMAND in
             if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   Wifi will now be deactivated" >> ${PATHDATA}/../logs/debug.log; fi
             echo "Wifi will now be deactivated"
             /usr/bin/mpg123 ${PATHDATA}/../shared/disablewifi.mp3
-            /usr/bin/mpg123 ${PATHDATA}/../shared/reswipeforenablewifi.mp3
+            /usr/bin/mpg123 ${PATHDATA}/../shared/reswipeforenable.mp3
             rfkill block wifi
         else
             if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   Wifi will now be activated" >> ${PATHDATA}/../logs/debug.log; fi
@@ -963,6 +971,52 @@ case $COMMAND in
         fi
         if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
         ;;
+    
+    enablebluetooth)
+        if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
+        rfkill unblock bluetooth
+        mpc pause && /usr/bin/mpg123 ${PATHDATA}/../shared/enablebluetooth.mp3
+        if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
+        ;;
+    disablebluetooth)
+        if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
+        # see https://forum-raspberrypi.de/forum/thread/25696-bluetooth-und-wlan-deaktivieren/#pid226072 seems to disable wifi,
+        # as good as it gets
+        mpc pause && /usr/bin/mpg123 ${PATHDATA}/../shared/disablebluetooth.mp3
+        # si on coupe le bluetooth, on bascule sur l'entrée par défaut
+        mpc enable 1 && mpc disable 2 3 4 5
+        if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
+        rfkill block bluetooth
+        ;;
+    togglebluetooth)
+        if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   ${COMMAND}" >> ${PATHDATA}/../logs/debug.log; fi
+        # function to allow toggle the wifi state
+        # Build special for franzformator
+        rfkill list bluetooth | grep -i "Soft blocked: no" > /dev/null 2>&1
+        WIFI_SOFTBLOCK_RESULT=$?
+        wpa_cli -i wlan0 status | grep 'ip_address' > /dev/null 2>&1
+        WIFI_IP_RESULT=$?
+        mpc pause
+
+        if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   WIFI_IP_RESULT='${WIFI_IP_RESULT}' WIFI_SOFTBLOCK_RESULT='${WIFI_SOFTBLOCK_RESULT}'" >> ${PATHDATA}/../logs/debug.log; fi
+        if [ $WIFI_SOFTBLOCK_RESULT -eq 0 ] && [ $WIFI_IP_RESULT -eq 0 ]
+        then
+            if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   Wifi will now be deactivated" >> ${PATHDATA}/../logs/debug.log; fi
+            echo "Wifi will now be deactivated"
+            /usr/bin/mpg123 ${PATHDATA}/../shared/disablebluetooth.mp3
+            /usr/bin/mpg123 ${PATHDATA}/../shared/reswipeforenable.mp3
+            # si on coupe le bluetooth, on bascule sur l'entrée par défaut
+            mpc enable 1 && mpc disable 2 3 4 5
+            rfkill block bluetooth
+        else
+            if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   Wifi will now be activated" >> ${PATHDATA}/../logs/debug.log; fi
+            echo "Wifi will now be activated"
+            rfkill unblock bluetooth
+            /usr/bin/mpg123 ${PATHDATA}/../shared/enablebluetooth.mp3
+        fi
+        if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
+        ;;
+
     recordstart)
         #mkdir $AUDIOFOLDERSPATH/Recordings
         #kill the potential current playback

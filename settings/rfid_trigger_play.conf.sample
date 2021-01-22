@@ -135,6 +135,14 @@ TOGGLEWIFI="%TOGGLEWIFI%"
 ### Read out the Wifi IP over the Phoniebox speakers
 CMDREADWIFIIP="%CMDREADWIFIIP%"
 
+## Bluetooth: switch on/off and other
+### Enable Bluetooth
+ENABLEBLUETOOTH="%ENABLEBLUETOOTH%"
+### Disable Bluetooth
+DISABLEBLUETOOTH="%DISABLEBLUETOOTH%"
+### Toggle Bluetooth on/off
+TOGGLEBLUETOOTH="%TOGGLEBLUETOOTH%"
+
 ## Recording audio commands 
 ### Start recording for 10 sec. duration
 RECORDSTART10="%RECORDSTART10%"

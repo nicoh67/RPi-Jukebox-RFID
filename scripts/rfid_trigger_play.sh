@@ -247,6 +247,15 @@ if [ "$CARDID" ]; then
         $TOGGLEWIFI)
             $PATHDATA/playout_controls.sh -c=togglewifi
             ;;
+        $ENABLEBLUETOOTH)
+            $PATHDATA/playout_controls.sh -c=enablebluetooth
+            ;;
+        $DISABLEBLUETOOTH)
+            $PATHDATA/playout_controls.sh -c=disablebluetooth
+            ;;
+        $TOGGLEBLUETOOTH)
+            $PATHDATA/playout_controls.sh -c=togglebluetooth
+            ;;
         $CMDPLAYCUSTOMPLS)
             $PATHDATA/playout_controls.sh -c=playlistaddplay -v="PhonieCustomPLS" -d="PhonieCustomPLS"
             ;;
