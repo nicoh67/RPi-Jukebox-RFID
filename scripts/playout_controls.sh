@@ -943,17 +943,25 @@ case $COMMAND in
         WIFI_SOFTBLOCK_RESULT=$?
         wpa_cli -i wlan0 status | grep 'ip_address' > /dev/null 2>&1
         WIFI_IP_RESULT=$?
+        mpc | grep -i 'playing' > /dev/null 2>&1
+        MPC_PLAYING=$?
+        mpc pause
+
         if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   WIFI_IP_RESULT='${WIFI_IP_RESULT}' WIFI_SOFTBLOCK_RESULT='${WIFI_SOFTBLOCK_RESULT}'" >> ${PATHDATA}/../logs/debug.log; fi
         if [ $WIFI_SOFTBLOCK_RESULT -eq 0 ] && [ $WIFI_IP_RESULT -eq 0 ]
         then
             if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   Wifi will now be deactivated" >> ${PATHDATA}/../logs/debug.log; fi
             echo "Wifi will now be deactivated"
+            /usr/bin/mpg123 ${PATHDATA}/../shared/disablewifi.mp3
+            /usr/bin/mpg123 ${PATHDATA}/../shared/reswipeforenablewifi.mp3
             rfkill block wifi
         else
             if [ "${DEBUG_playout_controls_sh}" == "TRUE" ]; then echo "   Wifi will now be activated" >> ${PATHDATA}/../logs/debug.log; fi
             echo "Wifi will now be activated"
             rfkill unblock wifi
+            /usr/bin/mpg123 ${PATHDATA}/../shared/enablewifi.mp3
         fi
+        if [ $MPC_PLAYING -eq 0 ]; then mpc play; fi
         ;;
     recordstart)
         #mkdir $AUDIOFOLDERSPATH/Recordings
